@@ -1,0 +1,38 @@
+; Define a toggle variable
+toggle := false
+count := 0  ; Variable to track the number of presses
+ 
+; Press F1 to start the script (press '\' once, then do * cycles of 'S' and 'Enter')
+F1::
+    if (!toggle)  ; Only run the script if it's not already running
+    {
+        toggle := true  ; Set toggle to true
+        count := 0      ; Reset the counter
+ 
+        Send, \            ; Press backslash '\' once
+        Sleep, 200         ; Wait for * seconds (1s = 1000 milliseconds)
+ 
+        ; Start the loop with a timer
+        SetTimer, PressKeys, 10
+    }
+return
+ 
+; Define the key press function that the timer will call
+PressKeys:
+    if (count < 80)  ; Run the loop until * presses are done
+    {
+        Send, s        ; Press 's' key
+        Sleep, 10    ; Wait for * second
+        Send, {Enter}  ; Press 'Enter' key
+        Sleep, 10    ; Wait for * second
+        count++        ; Increment the counter
+    }
+    else
+    {
+        SetTimer, PressKeys, Off  ; Stop the loop
+        toggle := false           ; Reset the toggle so it can be started again
+    }
+return
+ 
+; Press F2 to exit the script manually
+F2::ExitApp
